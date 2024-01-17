@@ -9,8 +9,24 @@ class CreateRoutine extends StatefulWidget {
 
 class _CreateRoutineState extends State<CreateRoutine> {
 
+  TextEditingController _TextEditngController = TextEditingController();
+
   List<String> categories = ['work','school', 'home'];
   String? categoryValue = 'work';
+
+  @override
+  void initState() {
+    super.initState();
+
+    final text = _TextEditngController.text;
+    print(text);
+    setState(() {
+      
+    });
+  }
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,13 +37,16 @@ class _CreateRoutineState extends State<CreateRoutine> {
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text('Category'), 
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.8,
                     child: DropdownButton(
+                      isExpanded: true,
                       dropdownColor: Colors.indigo.shade50,
                       value: categoryValue,
                       items: categories.map((String category){
@@ -46,7 +65,16 @@ class _CreateRoutineState extends State<CreateRoutine> {
                       onPressed:(){}, 
                       icon: const Icon(Icons.add))
                 ],
-              )
+              ),
+
+              Text('Title'),
+              TextFormField(
+                controller: _TextEditngController,
+                decoration: const InputDecoration(
+                  hintText: 'Title',
+                  border: OutlineInputBorder()
+                ),
+              ),
         
             ],
           ),
