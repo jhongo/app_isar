@@ -13,18 +13,19 @@ void main() async {
     [CategorySchema, RoutineSchema], 
     directory: dir.path);
 
-  runApp(const MyApp());
+  runApp(MyApp(isarIns: isarIns,));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final Isar isarIns;
+  const MyApp({super.key, required this.isarIns});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      home: HomeScreen(),
+      home: HomeScreen(isarIns: isarIns),
       theme: ThemeData(
        useMaterial3: true
       )

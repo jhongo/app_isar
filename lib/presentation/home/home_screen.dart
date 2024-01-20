@@ -1,9 +1,10 @@
 import 'package:app_isar/presentation/routine/routine_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 
 class HomeScreen extends StatelessWidget {
-   
-  const HomeScreen({Key? key}) : super(key: key);
+  final Isar isarIns;
+  const HomeScreen({Key? key, required this.isarIns}) : super(key: key);
   
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,7 @@ class HomeScreen extends StatelessWidget {
             icon: const Icon(Icons.add),
             onPressed: (){
               Navigator.push(
-                context, MaterialPageRoute(builder:(context) => const CreateRoutine(),));
+                context, MaterialPageRoute(builder:(context) =>  CreateRoutine(isarIns: isarIns,),));
             }, 
           )],
       ),

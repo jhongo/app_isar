@@ -1,7 +1,10 @@
+import 'package:app_isar/collections/category.dart';
 import 'package:flutter/material.dart';
+import 'package:isar/isar.dart';
 
 class CreateRoutine extends StatefulWidget {
-  const CreateRoutine({super.key});
+  final Isar isarIns;
+  const CreateRoutine({super.key, required this.isarIns});
 
   @override
   State<CreateRoutine> createState() => _CreateRoutineState();
@@ -81,7 +84,9 @@ class _CreateRoutineState extends State<CreateRoutine> {
                                   child: Text('Cancel')),
                                 TextButton(
                                   onPressed: () {
-                                    Navigator.pop(context);
+                                    if (_categoryController.text.isNotEmpty) {
+                                    _addCategory(widget.isarIns);
+                                    }
                                   }, 
                                   child: Text('Save'))
                               ],
@@ -165,6 +170,21 @@ class _CreateRoutineState extends State<CreateRoutine> {
     });
   }
 }
+
+  _addCategory(Isar isarIns) async {
+    final categories = isarIns.categorys;
+
+    final newCategory = Category()
+    ..name = _categoryController.text; 
+
+    await isarIns.writeTxn(() async {
+      await categories.put(newCategory);
+      
+    });
+
+    _categoryController.clear();
+
+  }
 }
 
 
