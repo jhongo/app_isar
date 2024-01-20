@@ -17,17 +17,18 @@ class _CreateRoutineState extends State<CreateRoutine> {
   final TextEditingController _categoryController = TextEditingController();
 
 
-  List<String> categories = ['work','school', 'home'];
+  List<Category>? categories;
   List<String> days = ['monday','tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
   String? dayValue = 'monday';
-  String? categoryValue = 'work';
+  Category? categoryValue;
 
   TimeOfDay selectedTime = TimeOfDay.now();
 
   @override
   void initState() {
     super.initState();
+    _readCategory();
   }
 
 
@@ -54,13 +55,13 @@ class _CreateRoutineState extends State<CreateRoutine> {
                       isExpanded: true,
                       dropdownColor: Colors.indigo.shade50,
                       value: categoryValue,
-                      items: categories.map((String category){
-                        return DropdownMenuItem(
+                      items: categories?.map<DropdownMenuItem<Category>>((Category category){
+                        return DropdownMenuItem<Category>(
                           value: category,
-                          child: Text(category),
+                          child: Text('${category.name}'),
                         );
                       }).toList(),
-                      onChanged: (value) {
+                      onChanged: (Category? value) {
                         setState(() {
                         categoryValue = value ;
                         });
@@ -179,12 +180,21 @@ class _CreateRoutineState extends State<CreateRoutine> {
 
     await isarIns.writeTxn(() async {
       await categories.put(newCategory);
-      
+
     });
-
     _categoryController.clear();
-
+    _readCategory();
   }
+
+  _readCategory() async{
+    final categoryCollection = widget.isarIns.categorys;
+    final getAllCategory = await categoryCollection.where().findAll();
+    setState(() {
+      categoryValue = null;
+      categories = getAllCategory;
+    });
+    
+  } 
 }
 
 
