@@ -147,7 +147,9 @@ class _CreateRoutineState extends State<CreateRoutine> {
               alignment: Alignment.center,
                 child: FilledButton(
                   onPressed: (){
+                    setState(() {
                     addRoutine();
+                    });
                   }, 
                   child: Text('SAVE')
                   ),
@@ -199,7 +201,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
     
   }
 
-  addRoutine() async{
+  Future<void> addRoutine() async{
     final routineCollection = widget.isarIns.routines;
     final newRoutine = Routine()
         ..title = _titleEditngController.text
@@ -207,14 +209,15 @@ class _CreateRoutineState extends State<CreateRoutine> {
         ..day = dayValue
         ..category.value = categoryValue;
     
-    await widget.isarIns.writeTxn((isar) async{
+    await widget.isarIns.writeTxn(() async{
       await routineCollection.put(newRoutine);
-    } as Future Function());
-
+    });
     _titleEditngController.clear();
     _timeController.clear();
     dayValue = 'monday';
-    categoryValue = null; 
+    categoryValue = categories?.first;
+
+    print('Routine saved successfully');
 
   }
 }
