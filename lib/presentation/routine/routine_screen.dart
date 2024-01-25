@@ -1,4 +1,5 @@
 import 'package:app_isar/collections/category.dart';
+import 'package:app_isar/collections/routine.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
@@ -145,7 +146,9 @@ class _CreateRoutineState extends State<CreateRoutine> {
             Align(
               alignment: Alignment.center,
                 child: FilledButton(
-                  onPressed: (){}, 
+                  onPressed: (){
+                    addRoutine();
+                  }, 
                   child: Text('SAVE')
                   ),
               )  
@@ -194,7 +197,26 @@ class _CreateRoutineState extends State<CreateRoutine> {
       categories = getAllCategory;
     });
     
-  } 
+  }
+
+  addRoutine() async{
+    final routineCollection = widget.isarIns.routines;
+    final newRoutine = Routine()
+        ..title = _titleEditngController.text
+        ..startTime = _timeController.text
+        ..day = dayValue
+        ..category.value = categoryValue;
+    
+    await widget.isarIns.writeTxn((isar) async{
+      await routineCollection.put(newRoutine);
+    } as Future Function());
+
+    _titleEditngController.clear();
+    _timeController.clear();
+    dayValue = 'monday';
+    categoryValue = null; 
+
+  }
 }
 
 

@@ -25,7 +25,7 @@ const RoutineSchema = CollectionSchema(
     r'startTime': PropertySchema(
       id: 1,
       name: r'startTime',
-      type: IsarType.dateTime,
+      type: IsarType.string,
     ),
     r'title': PropertySchema(
       id: 2,
@@ -47,8 +47,8 @@ const RoutineSchema = CollectionSchema(
       properties: [
         IndexPropertySchema(
           name: r'startTime',
-          type: IndexType.value,
-          caseSensitive: false,
+          type: IndexType.hash,
+          caseSensitive: true,
         )
       ],
     ),
@@ -94,6 +94,12 @@ int _routineEstimateSize(
     }
   }
   {
+    final value = object.startTime;
+    if (value != null) {
+      bytesCount += 3 + value.length * 3;
+    }
+  }
+  {
     final value = object.title;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -109,7 +115,7 @@ void _routineSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.day);
-  writer.writeDateTime(offsets[1], object.startTime);
+  writer.writeString(offsets[1], object.startTime);
   writer.writeString(offsets[2], object.title);
 }
 
@@ -122,7 +128,7 @@ Routine _routineDeserialize(
   final object = Routine();
   object.day = reader.readStringOrNull(offsets[0]);
   object.id = id;
-  object.startTime = reader.readDateTimeOrNull(offsets[1]);
+  object.startTime = reader.readStringOrNull(offsets[1]);
   object.title = reader.readStringOrNull(offsets[2]);
   return object;
 }
@@ -137,7 +143,7 @@ P _routineDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readDateTimeOrNull(offset)) as P;
+      return (reader.readStringOrNull(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
     default:
@@ -162,14 +168,6 @@ extension RoutineQueryWhereSort on QueryBuilder<Routine, Routine, QWhere> {
   QueryBuilder<Routine, Routine, QAfterWhere> anyId() {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(const IdWhereClause.any());
-    });
-  }
-
-  QueryBuilder<Routine, Routine, QAfterWhere> anyStartTime() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(
-        const IndexWhereClause.any(indexName: r'startTime'),
-      );
     });
   }
 }
@@ -261,7 +259,7 @@ extension RoutineQueryWhere on QueryBuilder<Routine, Routine, QWhereClause> {
   }
 
   QueryBuilder<Routine, Routine, QAfterWhereClause> startTimeEqualTo(
-      DateTime? startTime) {
+      String? startTime) {
     return QueryBuilder.apply(this, (query) {
       return query.addWhereClause(IndexWhereClause.equalTo(
         indexName: r'startTime',
@@ -271,7 +269,7 @@ extension RoutineQueryWhere on QueryBuilder<Routine, Routine, QWhereClause> {
   }
 
   QueryBuilder<Routine, Routine, QAfterWhereClause> startTimeNotEqualTo(
-      DateTime? startTime) {
+      String? startTime) {
     return QueryBuilder.apply(this, (query) {
       if (query.whereSort == Sort.asc) {
         return query
@@ -302,51 +300,6 @@ extension RoutineQueryWhere on QueryBuilder<Routine, Routine, QWhereClause> {
               includeUpper: false,
             ));
       }
-    });
-  }
-
-  QueryBuilder<Routine, Routine, QAfterWhereClause> startTimeGreaterThan(
-    DateTime? startTime, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'startTime',
-        lower: [startTime],
-        includeLower: include,
-        upper: [],
-      ));
-    });
-  }
-
-  QueryBuilder<Routine, Routine, QAfterWhereClause> startTimeLessThan(
-    DateTime? startTime, {
-    bool include = false,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'startTime',
-        lower: [],
-        upper: [startTime],
-        includeUpper: include,
-      ));
-    });
-  }
-
-  QueryBuilder<Routine, Routine, QAfterWhereClause> startTimeBetween(
-    DateTime? lowerStartTime,
-    DateTime? upperStartTime, {
-    bool includeLower = true,
-    bool includeUpper = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addWhereClause(IndexWhereClause.between(
-        indexName: r'startTime',
-        lower: [lowerStartTime],
-        includeLower: includeLower,
-        upper: [upperStartTime],
-        includeUpper: includeUpper,
-      ));
     });
   }
 
@@ -647,46 +600,54 @@ extension RoutineQueryFilter
   }
 
   QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeEqualTo(
-      DateTime? value) {
+    String? value, {
+    bool caseSensitive = true,
+  }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
         property: r'startTime',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeGreaterThan(
-    DateTime? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
         property: r'startTime',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeLessThan(
-    DateTime? value, {
+    String? value, {
     bool include = false,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
         property: r'startTime',
         value: value,
+        caseSensitive: caseSensitive,
       ));
     });
   }
 
   QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeBetween(
-    DateTime? lower,
-    DateTime? upper, {
+    String? lower,
+    String? upper, {
     bool includeLower = true,
     bool includeUpper = true,
+    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
@@ -695,6 +656,75 @@ extension RoutineQueryFilter
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeStartsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.startsWith(
+        property: r'startTime',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeEndsWith(
+    String value, {
+    bool caseSensitive = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.endsWith(
+        property: r'startTime',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeContains(
+      String value,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.contains(
+        property: r'startTime',
+        value: value,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeMatches(
+      String pattern,
+      {bool caseSensitive = true}) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.matches(
+        property: r'startTime',
+        wildcard: pattern,
+        caseSensitive: caseSensitive,
+      ));
+    });
+  }
+
+  QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeIsEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'startTime',
+        value: '',
+      ));
+    });
+  }
+
+  QueryBuilder<Routine, Routine, QAfterFilterCondition> startTimeIsNotEmpty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        property: r'startTime',
+        value: '',
       ));
     });
   }
@@ -963,9 +993,10 @@ extension RoutineQueryWhereDistinct
     });
   }
 
-  QueryBuilder<Routine, Routine, QDistinct> distinctByStartTime() {
+  QueryBuilder<Routine, Routine, QDistinct> distinctByStartTime(
+      {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'startTime');
+      return query.addDistinctBy(r'startTime', caseSensitive: caseSensitive);
     });
   }
 
@@ -991,7 +1022,7 @@ extension RoutineQueryProperty
     });
   }
 
-  QueryBuilder<Routine, DateTime?, QQueryOperations> startTimeProperty() {
+  QueryBuilder<Routine, String?, QQueryOperations> startTimeProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'startTime');
     });

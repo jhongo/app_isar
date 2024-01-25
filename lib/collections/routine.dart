@@ -10,7 +10,7 @@ class Routine{
   String? title;
 
   @Index() //^ Ordenar de forma descendente
-  DateTime? startTime;
+  late String? startTime;
   
   @Index(caseSensitive: false) //^ Puede buscar sin importar mayusculas o minusculas
   String? day;
