@@ -1,5 +1,6 @@
 import 'package:app_isar/collections/category.dart';
 import 'package:app_isar/collections/routine.dart';
+import 'package:app_isar/presentation/home/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
@@ -39,6 +40,11 @@ class _CreateRoutineState extends State<CreateRoutine> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Create Routine'),
+        leading: IconButton(
+          onPressed: (){
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(isarIns: widget.isarIns,),));
+          }, 
+          icon: const Icon(Icons.arrow_back_ios_new))
       ),
       body: SingleChildScrollView(
         child: Padding(
