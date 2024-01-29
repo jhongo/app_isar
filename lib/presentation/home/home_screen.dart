@@ -75,6 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         WidgetSpan(child: Icon(Icons.calendar_month)),
                         TextSpan(text: routines![index].day ?? ''),
                       ])),
+                      SizedBox(height: 10,),
                   ],
                 ),
                 trailing: const Icon(Icons.keyboard_arrow_right),
