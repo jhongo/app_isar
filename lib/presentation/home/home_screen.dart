@@ -88,6 +88,46 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  List<Widget> _buildWidgets(){
+    
+    List<Widget> list = [];
+    for(int i = 0;  i < routines!.length; i++){
+      list.add(
+        Card(
+          child: ListTile(
+            minVerticalPadding: 20,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Text(routines![i].title ?? '', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                SizedBox(height: 10,),
+                RichText(text:  TextSpan(
+                  style:const TextStyle(color: Colors.black),
+                  children: [
+                    const WidgetSpan(child: Icon(Icons.schedule)),
+                    TextSpan(text: routines![i].startTime ?? ''),
+                  ])),
+
+                RichText(text: TextSpan(
+                  style: TextStyle(color: Colors.black),
+                  children: [
+                    WidgetSpan(child: Icon(Icons.calendar_month)),
+                    TextSpan(text: routines![i].day ?? ''),
+                  ])),
+                  SizedBox(height: 10,),
+              ],
+            ),
+            trailing: const Icon(Icons.keyboard_arrow_right),
+          ),
+        )
+      );
+    }
+    return list;
+  }
+
+
+
   _readRountine() async {
     final routineCollection = widget.isarIns.routines;
     final getRoutine = await routineCollection.where().findAll();
