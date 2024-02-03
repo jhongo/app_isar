@@ -39,7 +39,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Create Routine'),
+        title: const Text('Create Routine'),
         leading: IconButton(
           onPressed: (){
             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(isarIns: widget.isarIns,),));
@@ -52,7 +52,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('Category'), 
+              const Text('Category'), 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -80,7 +80,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
                           context: context, 
                           builder: (context) {
                             return AlertDialog(
-                              title: Text('Add Category'),
+                              title: const Text('Add Category'),
                               content: TextField(
                                 controller: _categoryController,
                               ),
@@ -89,14 +89,14 @@ class _CreateRoutineState extends State<CreateRoutine> {
                                   onPressed: () {
                                     Navigator.pop(context);
                                   }, 
-                                  child: Text('Cancel')),
+                                  child: const Text('Cancel')),
                                 TextButton(
                                   onPressed: () {
                                     if (_categoryController.text.isNotEmpty) {
                                     _addCategory(widget.isarIns);
                                     }
                                   }, 
-                                  child: Text('Save'))
+                                  child: const Text('Save'))
                               ],
                             );
                           });
@@ -105,7 +105,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
                 ],
               ),
 
-              Text('Title'),
+              const Text('Title'),
               TextFormField(
                 controller: _titleEditngController,
                 decoration: const InputDecoration(
@@ -113,8 +113,8 @@ class _CreateRoutineState extends State<CreateRoutine> {
                   border: OutlineInputBorder()
                 ),
               ),
-              SizedBox(height: 20,),
-              Text('Start Time'),
+              const SizedBox(height: 20,),
+              const Text('Start Time'),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -133,8 +133,8 @@ class _CreateRoutineState extends State<CreateRoutine> {
                 ],
               ),
 
-              SizedBox(height: 20,),
-              Text('Day'),
+              const SizedBox(height: 20,),
+              const Text('Day'),
               DropdownButton(
                 isExpanded: true,
                 value: dayValue,
@@ -157,7 +157,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
                     addRoutine();
                     });
                   }, 
-                  child: Text('SAVE')
+                  child: const Text('SAVE')
                   ),
               )  
         

@@ -49,40 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body:SingleChildScrollView(
         child: Column(
-          
-          children: List.generate(
-            routines!.length, 
-            (index) {
-              return Card(
-              child: ListTile(
-                minVerticalPadding: 20,
-                title: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(routines![index].title ?? '', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                    SizedBox(height: 10,),
-                    RichText(text:  TextSpan(
-                      style:const TextStyle(color: Colors.black),
-                      children: [
-                        const WidgetSpan(child: Icon(Icons.schedule)),
-                        TextSpan(text: routines![index].startTime ?? ''),
-                      ])),
-
-                    RichText(text: TextSpan(
-                      style: TextStyle(color: Colors.black),
-                      children: [
-                        WidgetSpan(child: Icon(Icons.calendar_month)),
-                        TextSpan(text: routines![index].day ?? ''),
-                      ])),
-                      SizedBox(height: 10,),
-                  ],
-                ),
-                trailing: const Icon(Icons.keyboard_arrow_right),
-              ),
-            );
-            }
-            )
+          children: _buildWidgets(),
         )
       )
     );
@@ -101,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(routines![i].title ?? '', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                 RichText(text:  TextSpan(
                   style:const TextStyle(color: Colors.black),
                   children: [
@@ -110,12 +77,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ])),
 
                 RichText(text: TextSpan(
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                   children: [
-                    WidgetSpan(child: Icon(Icons.calendar_month)),
+                    const WidgetSpan(child: Icon(Icons.calendar_month)),
                     TextSpan(text: routines![i].day ?? ''),
                   ])),
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
               ],
             ),
             trailing: const Icon(Icons.keyboard_arrow_right),
