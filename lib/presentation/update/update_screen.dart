@@ -215,6 +215,12 @@ class _UpdateScreenState extends State<UpdateScreen> {
     _titleEditngController.text = widget.routine.title ?? '';
     _timeController.text = widget.routine.startTime ?? '';
     dayValue = widget.routine.day ?? '';
+
+    await widget.routine.category.load();
+    int? getId = widget.routine.category.value?.id;
+    setState(() {
+      categoryValue = categories?[getId! - 1];
+    });
   }
 
 
