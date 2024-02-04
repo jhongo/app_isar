@@ -1,10 +1,12 @@
 import 'package:app_isar/collections/routine.dart';
 import 'package:app_isar/presentation/routine/routine_screen.dart';
+import 'package:app_isar/presentation/update/update_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
 
 class HomeScreen extends StatefulWidget {
   final Isar isarIns;
+  // final Routine? routine;
   const HomeScreen({Key? key, required this.isarIns}) : super(key: key);
 
   @override
@@ -14,6 +16,15 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   List<Routine>? routines;
+
+  // _routePage(Isar isarIns){
+  //   Navigator.of(context).push(
+  //     PageRouteBuilder(pageBuilder: (context, animation, secondaryAnimation){
+  //       return FadeTransition(opacity: animation, child: UpdateScreen(isar: widget.isarIns,));
+  //     } )
+  //   );
+
+  // }
 
   @override
   void initState() {
@@ -42,8 +53,9 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.add),
             onPressed: (){
-              Navigator.pushReplacement(
-                context, MaterialPageRoute(builder:(context) =>  CreateRoutine(isarIns: widget.isarIns,),));
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return CreateRoutine(isarIns: widget.isarIns);
+              },));
             }, 
           )],
       ),
@@ -62,6 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
       list.add(
         Card(
           child: ListTile(
+            onTap: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) {
+                return UpdateScreen(isar: widget.isarIns, routine: routines![i]);
+              },));
+            },
             minVerticalPadding: 20,
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

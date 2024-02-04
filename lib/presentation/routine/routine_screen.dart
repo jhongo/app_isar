@@ -40,11 +40,6 @@ class _CreateRoutineState extends State<CreateRoutine> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Create Routine'),
-        leading: IconButton(
-          onPressed: (){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(isarIns: widget.isarIns),));
-          }, 
-          icon: const Icon(Icons.arrow_back_ios_new))
       ),
       body: SingleChildScrollView(
         child: Padding(

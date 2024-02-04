@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Material App',
-      home: HomeScreen(isarIns: isarIns),
+      home: HomeScreen(isarIns: isarIns, ),
       theme: ThemeData(
        useMaterial3: true
       )

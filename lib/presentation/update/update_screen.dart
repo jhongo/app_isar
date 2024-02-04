@@ -7,8 +7,8 @@ import 'package:isar/isar.dart';
 
 class UpdateScreen extends StatefulWidget {
   final Isar isar;
-
-  const UpdateScreen({super.key, required this.isar});
+  final Routine routine;
+  const UpdateScreen({super.key, required this.isar, required this.routine});
 
   @override
   State<UpdateScreen> createState() => _UpdateScreenState();
@@ -33,7 +33,7 @@ class _UpdateScreenState extends State<UpdateScreen> {
   @override
   void initState() {
     super.initState();
-    _readCategory();
+    _setRoutineInfo();
   }
 
 
@@ -157,10 +157,10 @@ class _UpdateScreenState extends State<UpdateScreen> {
                 child: FilledButton(
                   onPressed: (){
                     setState(() {
-                    addRoutine();
+                    
                     });
                   }, 
-                  child: const Text('SAVE')
+                  child: const Text('UPDATE')
                   ),
               )  
         
@@ -210,24 +210,11 @@ class _UpdateScreenState extends State<UpdateScreen> {
     
   }
 
-  Future<void> addRoutine() async{
-    final routineCollection = widget.isar.routines;
-    final newRoutine = Routine()
-        ..title = _titleEditngController.text
-        ..startTime = _timeController.text
-        ..day = dayValue
-        ..category.value = categoryValue;
-    
-    await widget.isar.writeTxn(() async{
-      await routineCollection.put(newRoutine);
-    });
-    _titleEditngController.clear();
-    _timeController.clear();
-    dayValue = 'monday';
-    categoryValue = categories?.first;
-
-    print('Routine saved successfully');
-
+  _setRoutineInfo() async{
+    await _readCategory();
+    _titleEditngController.text = widget.routine.title ?? '';
+    _timeController.text = widget.routine.startTime ?? '';
+    dayValue = widget.routine.day ?? '';
   }
 
 
