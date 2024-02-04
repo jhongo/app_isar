@@ -1,18 +1,21 @@
-import 'package:app_isar/collections/category.dart';
-import 'package:app_isar/collections/routine.dart';
 import 'package:app_isar/presentation/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:app_isar/collections/category.dart';
+import 'package:app_isar/collections/routine.dart';
 import 'package:isar/isar.dart';
 
-class CreateRoutine extends StatefulWidget {
-  final Isar isarIns;
-  const CreateRoutine({super.key, required this.isarIns});
+
+class UpdateScreen extends StatefulWidget {
+  final Isar isar;
+
+  const UpdateScreen({super.key, required this.isar});
 
   @override
-  State<CreateRoutine> createState() => _CreateRoutineState();
+  State<UpdateScreen> createState() => _UpdateScreenState();
 }
 
-class _CreateRoutineState extends State<CreateRoutine> {
+class _UpdateScreenState extends State<UpdateScreen> {
+
 
   final TextEditingController _titleEditngController = TextEditingController();
   final TextEditingController _timeController = TextEditingController();
@@ -42,7 +45,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
         title: const Text('Create Routine'),
         leading: IconButton(
           onPressed: (){
-            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(isarIns: widget.isarIns),));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeScreen(isarIns: widget.isar,),));
           }, 
           icon: const Icon(Icons.arrow_back_ios_new))
       ),
@@ -93,7 +96,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
                                 TextButton(
                                   onPressed: () {
                                     if (_categoryController.text.isNotEmpty) {
-                                    _addCategory(widget.isarIns);
+                                    _addCategory(widget.isar);
                                     }
                                   }, 
                                   child: const Text('Save'))
@@ -181,15 +184,15 @@ class _CreateRoutineState extends State<CreateRoutine> {
       _timeController.text = "${selectedTime.hour}:${selectedTime.minute} ${selectedTime.period.name}";
     });
   }
-}
+  }
 
-  _addCategory(Isar isarIns) async {
-    final categories = isarIns.categorys;
+  _addCategory(Isar isar) async {
+    final categories = isar.categorys;
 
     final newCategory = Category()
     ..name = _categoryController.text; 
 
-    await isarIns.writeTxn(() async {
+    await isar.writeTxn(() async {
       await categories.put(newCategory);
 
     });
@@ -198,7 +201,7 @@ class _CreateRoutineState extends State<CreateRoutine> {
   }
 
   _readCategory() async{
-    final categoryCollection = widget.isarIns.categorys;
+    final categoryCollection = widget.isar.categorys;
     final getAllCategory = await categoryCollection.where().findAll();
     setState(() {
       categoryValue = null;
@@ -208,14 +211,14 @@ class _CreateRoutineState extends State<CreateRoutine> {
   }
 
   Future<void> addRoutine() async{
-    final routineCollection = widget.isarIns.routines;
+    final routineCollection = widget.isar.routines;
     final newRoutine = Routine()
         ..title = _titleEditngController.text
         ..startTime = _timeController.text
         ..day = dayValue
         ..category.value = categoryValue;
     
-    await widget.isarIns.writeTxn(() async{
+    await widget.isar.writeTxn(() async{
       await routineCollection.put(newRoutine);
     });
     _titleEditngController.clear();
@@ -226,7 +229,6 @@ class _CreateRoutineState extends State<CreateRoutine> {
     print('Routine saved successfully');
 
   }
+
+
 }
-
-
-
